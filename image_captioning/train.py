@@ -14,8 +14,8 @@ from tqdm import tqdm
 
 
 # Device configuration
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# device = 'cpu'
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = 'cpu'
 
 def main(args):
     # Create model directory
@@ -77,9 +77,11 @@ def main(args):
             # Save the model checkpoints
             if (i+1) % args.save_step == 0:
                 torch.save(decoder.state_dict(), os.path.join(
-                    args.model_path, 'decoder-{}-{}.ckpt'.format(epoch+1, i+1)))
+                    # args.model_path, 'decoder-{}-{}.ckpt'.format(epoch+1, i+1)))
+                    args.model_path, 'decoder-{}-{}.pth'.format(epoch+1, i+1)))
                 torch.save(encoder.state_dict(), os.path.join(
-                    args.model_path, 'encoder-{}-{}.ckpt'.format(epoch+1, i+1)))
+                    # args.model_path, 'encoder-{}-{}.ckpt'.format(epoch+1, i+1)))
+                    args.model_path, 'encoder-{}-{}.pth'.format(epoch+1, i+1)))
 
 
 if __name__ == '__main__':
@@ -87,7 +89,8 @@ if __name__ == '__main__':
     parser.add_argument('--model_path', type=str, default='models/' , help='path for saving trained models')
     parser.add_argument('--crop_size', type=int, default=224 , help='size for randomly cropping images')
     # parser.add_argument('--vocab_path', type=str, default='data/vocab.pkl', help='path for vocabulary wrapper')
-    parser.add_argument('--vocab_path', type=str, default='data/vocab_jp.pkl', help='path for vocabulary wrapper')
+    # parser.add_argument('--vocab_path', type=str, default='data/vocab_jp.pkl', help='path for vocabulary wrapper')
+    parser.add_argument('--vocab_path', type=str, default='data/vocab_jp_bokete.pkl', help='path for vocabulary wrapper')
     parser.add_argument('--image_dir', type=str, default='data/resized2014', help='directory for resized images')
     # parser.add_argument('--caption_path', type=str, default='data/annotations/captions_train2014.json', help='path for train annotation json file')
     parser.add_argument('--caption_path', type=str, default='data/annotations/stair_captions_v1.2_train_tokenized.json', help='path for train annotation json file')

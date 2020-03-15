@@ -9,6 +9,9 @@ from PIL import Image
 from build_vocab import Vocabulary
 from pycocotools.coco import COCO
 
+import random
+from util import unpickle
+
 
 class CocoDataset(data.Dataset):
     """COCO Custom Dataset compatible with torch.utils.data.DataLoader."""
@@ -27,13 +30,23 @@ class CocoDataset(data.Dataset):
         self.vocab = vocab
         self.transform = transform
 
+        self.tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
+
+
     def __getitem__(self, index):
         """Returns one data pair (image and caption)."""
         coco = self.coco
         vocab = self.vocab
         ann_id = self.ids[index]
         # caption = coco.anns[ann_id]['caption']
-        caption = coco.anns[ann_id]['tokenized_caption']
+        # caption = coco.anns[ann_id]['tokenized_caption']
+        if ann_id > len(self.tokenized_text_list):
+            caption = random.choice(self.tokenized_text_list)
+        else:
+            caption = self.tokenized_text_list[ann_id]
+
+        # print(caption)
+
         img_id = coco.anns[ann_id]['image_id']
         path = coco.loadImgs(img_id)[0]['file_name']
 

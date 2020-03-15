@@ -58,8 +58,46 @@ def build_vocab(json, threshold):
         vocab.add_word(word)
     return vocab
 
+
+def build_vocab_custom(tokenized_text_list, threshold):
+    """Build a simple vocabulary wrapper."""
+    counter = Counter()
+    for i, tokens in enumerate(tokenized_text_list):
+        counter.update(tokens)
+
+        if (i+1) % 1000 == 0:
+            print("[{}/{}] Tokenized the captions.".format(i+1, len(tokenized_text_list)))
+
+    # If the word frequency is less than 'threshold', then the word is discarded.
+    words = [word for word, cnt in counter.items() if cnt >= threshold]
+
+    # Create a vocab wrapper and add some special tokens.
+    vocab = Vocabulary()
+    vocab.add_word('<pad>')
+    vocab.add_word('<start>')
+    vocab.add_word('<end>')
+    vocab.add_word('<unk>')
+
+    # Add the words to the vocabulary.
+    for i, word in enumerate(words):
+        vocab.add_word(word)
+    return vocab
+
+
+def to_pickle(filename, obj):
+    with open(filename, mode='wb') as f:
+        pickle.dump(obj, f)
+
+def unpickle(filename):
+    with open(filename, mode='rb') as fo:
+        p = pickle.load(fo)
+    return p 
+
+
 def main(args):
-    vocab = build_vocab(json=args.caption_path, threshold=args.threshold)
+    # vocab = build_vocab(json=args.caption_path, threshold=args.threshold)
+    tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
+    vocab = build_vocab_custom(tokenized_text_list, 2)
     vocab_path = args.vocab_path
     with open(vocab_path, 'wb') as f:
         pickle.dump(vocab, f)
@@ -81,7 +119,10 @@ if __name__ == '__main__':
     parser.add_argument('--caption_path', type=str,
                         default='data/annotations/stair_captions_v1.2_train_tokenized.json',
                         help='path for train annotation file')
-    parser.add_argument('--vocab_path', type=str, default='./data/vocab_jp.pkl',
+    # parser.add_argument('--vocab_path', type=str, default='./data/vocab_jp.pkl',
+    #                     help='path for saving vocabulary wrapper')
+
+    parser.add_argument('--vocab_path', type=str, default='./data/vocab_jp_bokete.pkl',
                         help='path for saving vocabulary wrapper')
 
     parser.add_argument('--threshold', type=int, default=4, 
