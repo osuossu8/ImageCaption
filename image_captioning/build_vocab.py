@@ -97,7 +97,7 @@ def unpickle(filename):
 def main(args):
     # vocab = build_vocab(json=args.caption_path, threshold=args.threshold)
     tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
-    vocab = build_vocab_custom(tokenized_text_list, 2)
+    vocab = build_vocab_custom(tokenized_text_list, 6)
     vocab_path = args.vocab_path
     with open(vocab_path, 'wb') as f:
         pickle.dump(vocab, f)

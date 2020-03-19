@@ -9,7 +9,6 @@ from build_vocab import Vocabulary
 from model import EncoderCNN, DecoderRNN
 from PIL import Image
 
-
 import sys
 sys.path.append('/usr/src/app/pytorch-tutorial/tutorials/03-advanced/image_captioning')
 
@@ -58,8 +57,6 @@ def main(args):
     sampled_ids = decoder.sample(feature)
     sampled_ids = sampled_ids[0].cpu().numpy()          # (1, max_seq_length) -> (max_seq_length)
 
-    print(sampled_ids)
-    
     # Convert word_ids to words
     sampled_caption = []
     for word_id in sampled_ids:
@@ -79,13 +76,16 @@ if __name__ == '__main__':
     parser.add_argument('--image', type=str, required=True, help='input image for generating caption')
     # parser.add_argument('--encoder_path', type=str, default='models/encoder-5-3000.pkl', help='path for trained encoder')
     # parser.add_argument('--decoder_path', type=str, default='models/decoder-5-3000.pkl', help='path for trained decoder')
-
-    parser.add_argument('--encoder_path', type=str, default='models/encoder-5-3000.ckpt', help='path for trained encoder')
-    parser.add_argument('--decoder_path', type=str, default='models/decoder-5-3000.ckpt', help='path for trained decoder')
-
     # parser.add_argument('--vocab_path', type=str, default='data/vocab.pkl', help='path for vocabulary wrapper')
-    parser.add_argument('--vocab_path', type=str, default='data/vocab_jp.pkl', help='path for vocabulary wrapper')
-    
+
+    # parser.add_argument('--encoder_path', type=str, default='models/encoder-5-3000.ckpt', help='path for trained encoder')
+    # parser.add_argument('--decoder_path', type=str, default='models/decoder-5-3000.ckpt', help='path for trained decoder')
+    # parser.add_argument('--vocab_path', type=str, default='data/vocab_jp.pkl', help='path for vocabulary wrapper')
+ 
+    parser.add_argument('--encoder_path', type=str, default='models/encoder-5-3000.pth', help='path for trained encoder')
+    parser.add_argument('--decoder_path', type=str, default='models/decoder-5-3000.pth', help='path for trained decoder')
+    parser.add_argument('--vocab_path', type=str, default='data/vocab_jp_bokete.pkl', help='path for vocabulary wrapper')
+   
     # Model parameters (should be same as paramters in train.py)
     parser.add_argument('--embed_size', type=int , default=256, help='dimension of word embedding vectors')
     parser.add_argument('--hidden_size', type=int , default=512, help='dimension of lstm hidden states')

@@ -40,10 +40,10 @@ class CocoDataset(data.Dataset):
         ann_id = self.ids[index]
         # caption = coco.anns[ann_id]['caption']
         # caption = coco.anns[ann_id]['tokenized_caption']
-        if ann_id > len(self.tokenized_text_list):
-            caption = random.choice(self.tokenized_text_list)
-        else:
+        try:
             caption = self.tokenized_text_list[ann_id]
+        except:
+            caption = random.choice(self.tokenized_text_list)
 
         # print(caption)
 
@@ -55,7 +55,8 @@ class CocoDataset(data.Dataset):
             image = self.transform(image)
 
         # Convert caption (string) to word ids.
-        tokens = nltk.tokenize.word_tokenize(str(caption).lower())
+        # tokens = nltk.tokenize.word_tokenize(str(caption).lower())
+        tokens = caption
         caption = []
         caption.append(vocab('<start>'))
         caption.extend([vocab(token) for token in tokens])

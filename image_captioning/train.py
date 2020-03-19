@@ -14,8 +14,8 @@ from tqdm import tqdm
 
 
 # Device configuration
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-device = 'cpu'
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = 'cpu'
 
 def main(args):
     # Create model directory
@@ -53,8 +53,10 @@ def main(args):
     # Train the models
     total_step = len(data_loader)
     for epoch in range(args.num_epochs):
-        for i, (images, captions, lengths) in tqdm(enumerate(data_loader)):
-            
+        for i, (images, captions, lengths) in tqdm(enumerate(data_loader), total=len(data_loader)):
+
+            # print(captions) 
+           
             # Set mini-batch dataset
             images = images.to(device)
             captions = captions.to(device)
