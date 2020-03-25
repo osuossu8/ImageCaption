@@ -55,8 +55,6 @@ def main(args):
     for epoch in range(args.num_epochs):
         for i, (images, captions, lengths) in tqdm(enumerate(data_loader), total=len(data_loader)):
 
-            # print(captions) 
-           
             # Set mini-batch dataset
             images = images.to(device)
             captions = captions.to(device)
@@ -104,7 +102,8 @@ if __name__ == '__main__':
     parser.add_argument('--hidden_size', type=int , default=512, help='dimension of lstm hidden states')
     parser.add_argument('--num_layers', type=int , default=1, help='number of layers in lstm')
     
-    parser.add_argument('--num_epochs', type=int, default=5)
+    # parser.add_argument('--num_epochs', type=int, default=5)
+    parser.add_argument('--num_epochs', type=int, default=3)
     parser.add_argument('--batch_size', type=int, default=128)
     # parser.add_argument('--num_workers', type=int, default=2)
     parser.add_argument('--num_workers', type=int, default=0)

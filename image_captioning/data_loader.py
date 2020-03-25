@@ -30,7 +30,8 @@ class CocoDataset(data.Dataset):
         self.vocab = vocab
         self.transform = transform
 
-        self.tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
+        # self.tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
+        self.tokenized_text_list = unpickle('tokenized_text_list_mecab.pkl')
 
 
     def __getitem__(self, index):

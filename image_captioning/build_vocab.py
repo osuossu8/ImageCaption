@@ -8,6 +8,9 @@ import nltk
 nltk.download('punkt')
 
 
+from text_util import MecabTokenizer, TextPreprocessorJP
+
+
 class Vocabulary(object):
     """Simple vocabulary wrapper."""
     def __init__(self):
@@ -63,6 +66,7 @@ def build_vocab_custom(tokenized_text_list, threshold):
     """Build a simple vocabulary wrapper."""
     counter = Counter()
     for i, tokens in enumerate(tokenized_text_list):
+        # print(tokens)
         counter.update(tokens)
 
         if (i+1) % 1000 == 0:
@@ -96,8 +100,14 @@ def unpickle(filename):
 
 def main(args):
     # vocab = build_vocab(json=args.caption_path, threshold=args.threshold)
-    tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
-    vocab = build_vocab_custom(tokenized_text_list, 6)
+    # tokenized_text_list = unpickle('tokenized_bokete_text.pkl')
+    text_list = unpickle('bokete_text.pkl')
+    tok = MecabTokenizer()
+    te = TextPreprocessorJP()
+    tokenized_text_list = [tok.tokenize(te.rm_spaces(t)) for t in text_list if tok.tokenize(t) != ['']]
+    print(len(tokenized_text_list))
+    to_pickle('tokenized_text_list_mecab.pkl', tokenized_text_list)
+    vocab = build_vocab_custom(tokenized_text_list, 4)
     vocab_path = args.vocab_path
     with open(vocab_path, 'wb') as f:
         pickle.dump(vocab, f)
@@ -129,6 +139,7 @@ if __name__ == '__main__':
                         help='minimum word count threshold')
     args = parser.parse_args()
     main(args)
+
 
     '''
     json=args.caption_path
